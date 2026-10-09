@@ -1,8 +1,8 @@
 # Quality-attribute scenarios: Angkor Mart monthly sales report
 
 ## Stakeholders
-- Head-office analyst: ...
-- Branch manager (PNH, REP, BTB): ...
+- Head-office analyst: Person 1
+- Branch manager (PNH, REP, BTB): Person 2 , Person 3 , Person 4
 
 ## Scenarios
 | ID | Attribute | Source | Stimulus | Artifact | Environment | Response | Response measure | Rank |
