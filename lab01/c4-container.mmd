@@ -1,0 +1,37 @@
+flowchart TB
+    %% Stakeholders & External Systems
+    analyst["Analyst<br/>[Person]<br/>head office"]:::person
+    branchManager["Branch Manager<br/>[Person]<br/>PNH, REP, BTB"]:::person
+    financeDir["Finance Director<br/>[Person]<br/>head office"]:::person
+    
+    posSystem["Branch POS System<br/>[External system, x3]<br/>Generates daily CSVs"]:::external
+    smtp["SMTP Server<br/>[External system]<br/>Email delivery"]:::external
+
+    %% System Boundary & Internal Containers
+    subgraph c1["Monthly Sales Report System"]
+        ingestEngine["CSV Ingestion Module<br/>[Container: Java 25]<br/>Parses and validates incoming CSV transactions"]:::container
+        calcEngine["Aggregation Engine<br/>[Container: Java 25]<br/>Computes totals, basket averages, top products, anomalies"]:::container
+        renderEngine["Report Renderer<br/>[Container: Java 25 / Apache POI / OpenPDF]<br/>Generates PDF and Excel export files"]:::container
+        webUi["Web UI Dashboard<br/>[Container: Java / Spring Boot / Thymeleaf]<br/>Allows branch managers and analysts to view reports"]:::container
+        db[("Report Storage<br/>[Container Database: SQLite / Local FS]<br/>Stores parsed transactions and aggregated summaries")]:::db
+    end
+
+    %% Relationships
+    posSystem -- "Sends daily CSV files [File Transfer]" --> ingestEngine
+    ingestEngine -- "Passes validated SaleTransaction objects" --> calcEngine
+    calcEngine -- "Stores aggregated metrics and anomaly logs [JDBC / File I/O]" --> db
+    
+    webUi -- "Queries report data" --> db
+    renderEngine -- "Reads aggregated data" --> db
+    
+    analyst -- "Downloads PDF/Excel reports [HTTPS]" --> renderEngine
+    branchManager -- "Views branch sales web page [HTTPS]" --> webUi
+    
+    calcEngine -- "Triggers report alerts [SMTP]" --> smtp
+    smtp -- "Delivers report notification email [SMTP]" --> financeDir
+
+    %% Styling Classes
+    classDef person fill:#08427b,color:#ffffff,stroke:#052e56
+    classDef container fill:#1168bd,color:#ffffff,stroke:#0b4884
+    classDef db fill:#1168bd,color:#ffffff,stroke:#0b4884
+    classDef external fill:#8a8a8a,color:#ffffff,stroke:#6b6b6b

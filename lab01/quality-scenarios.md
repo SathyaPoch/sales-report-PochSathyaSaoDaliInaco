@@ -41,19 +41,35 @@
 
 ```mermaid
 flowchart LR
-    Root[Utility Tree] --> Performance
-    Root[Utility Tree] --> Scalability
-    Root[Utility Tree] --> Availability
-    Root[Utility Tree] --> Modifiability
-    Root[Utility Tree] --> Security
-    Root[Utility Tree] --> Testability
+    %% Define Graph Style
+    classDef root fill:#333,stroke:#fff,stroke-width:1px,color:#fff;
+    classDef category fill:#222,stroke:#fff,stroke-width:1px,color:#fff;
+    classDef leaf fill:#222,stroke:#fff,stroke-width:1px,color:#fff;
 
-    Performance --> QA1["QA-1: Monthly 3M row report execution time (H, H)"]
-    Scalability --> QA2["QA-2: 5x volume spike handling (M, H)"]
-    Availability --> QA3["QA-3: Branch network link failure (H, M)"]
-    Modifiability --> QA4["QA-4: Report field schema addition (L, L)"]
-    Security --> QA5["QA-5: Branch data separation enforcement (H, M)"]
-    Testability --> QA6["QA-6: Parser unit test automation (M, L)"]
+    %% Define Tree Nodes with exact content matching your sample
+    Utility(((Utility))):::root
+
+    Perf[Performance]:::category
+    Scal[Scalability]:::category
+    Avail[Availability]:::category
+    Mod[Modifiability]:::category
+    Sec[Security]:::category
+    Test[Testability]:::category
+
+    QA1["QA-1 (H,H) month of 3 M<br/>rows in 60 s or less"]:::leaf
+    QA2["QA-2 (M,M) 4th branch<br/>adds at most 35 % run time"]:::leaf
+    QA3["QA-3 (H,M) REP file 2 h<br/>late: others out by 07:00"]:::leaf
+    QA4["QA-4 (H,L) new export<br/>format in 2 days or less"]:::leaf
+    QA5["QA-5 (H,M) manager sees<br/>own branch only"]:::leaf
+    QA6["QA-6 (M,L) unit/integration tests<br/>achieve >= 85 % coverage"]:::leaf
+
+    %% Connections
+    Utility --> Perf --> QA1
+    Utility --> Scal --> QA2
+    Utility --> Avail --> QA3
+    Utility --> Mod --> QA4
+    Utility --> Sec --> QA5
+    Utility --> Test --> QA6
 ```
 
 ## Architectural drivers
