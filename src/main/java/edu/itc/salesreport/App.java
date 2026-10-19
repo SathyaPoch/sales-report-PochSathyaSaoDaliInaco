@@ -1,4 +1,4 @@
-package edu.itc;
+package edu.itc.salesreport;
 
 import edu.itc.salesreport.ingest.ConsoleProgress;
 import edu.itc.salesreport.ingest.CsvTransactionParser;
